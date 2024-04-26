@@ -34,6 +34,8 @@ async function run() {
 
     //create DB
     const coffeeCollection = client.db('coffeeDB').collection('coffee')
+    // create DB for authentication
+    const userCollection = client.db('coffeeDB').collection('user')
 
 
    // ============================== CRUD ACTION HERE =======================
@@ -48,12 +50,13 @@ async function run() {
     })
     
 
-    // 2. READ
+    // 2. READ - data dekha
     app.get('/coffee', async(req, res) =>{
        const cursor = coffeeCollection.find();
        const result = await cursor.toArray();
        res.send(result)
     })
+
 
     // 3. DELETE
     app.delete('/coffee/:id', async(req, res) => {
@@ -93,6 +96,30 @@ async function run() {
       res.send(result);
     })
 
+
+    //user related apis
+    app.post('/user', async(req, res) => {
+      const newUser = req.body;
+      console.log(newUser);
+      const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    })
+
+    app.get('/user', async(req, res) => {
+        const cursor = userCollection.find();
+        const users = await cursor.toArray();
+        res.send(users);
+    })
+
+    app.delete('/user/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result = await userCollection.deleteOne(query);
+        res.send(result);
+    })
+
+
+    
     
 // ============================== CRUD ACTION END =======================
 
