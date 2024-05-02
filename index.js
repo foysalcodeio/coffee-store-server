@@ -74,6 +74,13 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/coffeeDetails/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await coffeeCollection.findOne(query);
+      res.send(result);
+    })
+
     // 4. 2. UPDATE
 
     app.put('/coffee/:id', async(req, res) => {
@@ -117,6 +124,15 @@ async function run() {
         res.send(result);
     })
 
+
+    app.get('/user/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    })
+
+
     app.get('/user', async(req, res) => {
         const cursor = userCollection.find();
         const users = await cursor.toArray();
@@ -131,8 +147,6 @@ async function run() {
     })
 
 
-    
-    
 // ============================== CRUD ACTION END =======================
 
 
